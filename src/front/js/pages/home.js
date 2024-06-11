@@ -1,36 +1,17 @@
 import React, { useContext } from "react";
 import { Context } from "../store/appContext";
-import rigoImageUrl from "../../img/rigo-baby.jpg";
-import "../../styles/home.css";
-import { Link } from "react-router-dom";
+// import penguinImage from "../../img/penguin.png";
+import "../../styles/index.css";
 
 export const Home = () => {
 	const { store, actions } = useContext(Context);
 
 	return (
 		<div className="text-center mt-5">
-			<h1>Hello Rigo!!</h1>
+			<h1>Hello World!!</h1>
+			<h4>This is a safe place where you can write code as much as you want</h4>
 			<p>
-				<img src={rigoImageUrl} />
-			</p>
-			<div className="alert alert-info">
-				{store.message || "Loading message from the backend (make sure your python backend is running)..."}
-			</div>
-			<Link to="/login">
-				<span className="btn btn-primary btn-lg" href="#" role="button">
-					Login
-				</span>
-			</Link>
-			<Link to="/signup">
-				<span className="btn btn-success btn-lg" href="#" role="button">
-					Sign Up
-				</span>
-			</Link>
-			<p>
-				This boilerplate comes with lots of documentation:{" "}
-				<a href="https://start.4geeksacademy.com/starters/react-flask">
-					Read documentation
-				</a>
+				<img src="https://st4.depositphotos.com/1010735/21836/v/450/depositphotos_218363620-stock-illustration-autumn-welcome-sign-colorful-maple.jpg" style={{width:350}} />
 			</p>
 		</div>
 	);

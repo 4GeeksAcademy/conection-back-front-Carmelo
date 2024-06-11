@@ -16,6 +16,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					initial: "white"
 				}
 			],
+			login:[],
 			storeToken: false,
 		},
 		actions: {
@@ -50,6 +51,61 @@ const getState = ({ getStore, getActions, setStore }) => {
 				//reset the global store
 				setStore({ demo: demo });
 			},
+			login: async (email, password) => {
+                try {
+				const response = await fetch(`${process.env.BACKEND_URL}/api/login`, {
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json'
+						},
+						body: JSON.stringify({
+							email: email,
+							password: password
+						})
+					});
+					let data = await response.json()
+					if (response.status === 200) {
+						localStorage.setItem("token", data.access_token);
+						return true;
+					} else {
+						return false
+					}
+				} catch (error) {
+					return false;
+				}
+				
+			},
+			
+			signOut: () => {
+				localStorage.removeItem('token');
+			 	setStore({storeToken: null 
+			 	});
+			 },
+			signup: async (email, password) => {
+                try {
+					const response = await fetch(`${process.env.BACKEND_URL}/api/signup`, {
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json'
+						},
+						body: JSON.stringify({
+							email: email,
+							password: password
+						})
+					});
+					let data = await response.json()
+					if (response.status === 201) {
+						localStorage.setItem("token", data.access_token);
+						return "success";
+					} else if (response.status === 409) {
+						return "email_exist";
+					} else {
+						return "incomplete_data"
+					}
+				} catch (error) {
+					return false;
+				}
+			},
 			isAuthenticated: (token) =>{
 				const options = {
 					method: 'POST',
@@ -59,9 +115,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 					},
 					body: JSON.stringify({})
 				}
-				
-				//console.log(options.headers.Authorization)    
-			
 				fetch(process.env.BACKEND_URL + "/api/private", options)
 				.then(response => {
 					if (response.status === 200){
@@ -74,9 +127,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 				.then(response => setStore({storeToken: true}))
 				.catch(error => console.log('error', error));
 			},
-			signOut: ()=>{
-				setStore({storeToken: null})
-			}
 		}
 	};
 };
