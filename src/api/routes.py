@@ -55,3 +55,17 @@ def login():
         return jsonify({"msg": "El email o password no son correctos"}), 401
     access_token = create_access_token(identity=email)
     return jsonify(access_token=access_token),200
+
+@api.route('/private', methods=['GET', 'POST'])
+@jwt_required()
+def private():
+    if request.method == 'GET':
+        current_user = get_jwt_identity()
+        response_body = {
+            "message": f"Welcome to the private route, {current_user}!"
+        }
+        return jsonify(response_body), 200
+    elif request.method == 'POST':
+        # Lógica para manejar solicitudes POST en la ruta privada
+        # Por ejemplo, puedes agregar aquí la lógica para crear recursos privados
+        return jsonify({"message": "This is a POST request to the private route"}), 200
